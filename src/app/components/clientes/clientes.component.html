@@ -1,0 +1,86 @@
+<div class="container mt-5">
+
+    <!-- <h1 class="text-center mb-4">Clientes</h1> -->
+
+    <button class="btn btn-primary" (click)="open(content)">Agregar</button>
+
+    <hr/>
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nombres</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Año</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Fecha Creacion</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cliente of clientes">
+                <td>{{ cliente.idcliente }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.apellido }}</td>
+                <td>{{ cliente.anio }}</td>
+                <td>{{ cliente.correo }}</td>
+                <td>{{ cliente.fecha_creacion }}</td>
+                <td><button class="btn btn-warning" (click)="cargarCliente(cliente, content)">Editar</button></td>
+                <td><button class="btn btn-danger" (click)="mostrarVentanaEliminar(cliente)">Eliminar</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+            (pageChange)="consultarClientes()">
+        </ngb-pagination>
+
+        <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="consultarClientes()">
+            <option [ngValue]="2">2 items per page</option>
+            <option [ngValue]="4">4 items per page</option>
+            <option [ngValue]="6">6 items per page</option>
+        </select>
+    </div>
+
+
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Formulario de Clientes</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form #formCliente="ngForm" (ngSubmit)="guardarCliente(formCliente?.value)">
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label for="txtNombre">Nombre :</label>
+                <input type="text" class="form-control" id="txtNombre" name="nombre" [(ngModel)]="cliente.nombre"
+                    #nombre="ngModel">
+            </div>
+            <div class="form-group">
+                <label for="txtApellido">Apellido :</label>
+                <input type="text" class="form-control" id="txtApellido" name="apellido" [(ngModel)]="cliente.apellido"
+                    #apellido="ngModel">
+            </div>
+            <div class="form-group">
+                <label for="txtAnio">Año :</label>
+                <input type="text" class="form-control" id="txtAnio" name="anio" [(ngModel)]="cliente.anio"
+                    #anio="ngModel">
+            </div>
+            <div class="form-group">
+                <label for="txtCorreo">Correo :</label>
+                <input type="text" class="form-control" id="txtCorreo" name="correo" [(ngModel)]="cliente.correo"
+                    #correo="ngModel">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-success">Guardar</button>
+            <button type="reset" class="btn btn-outline-danger" (click)="modal.close()">Cancelar</button>
+        </div>
+    </form>
+</ng-template>
